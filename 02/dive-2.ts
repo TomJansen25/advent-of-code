@@ -15,7 +15,7 @@ let depth: number = 0
 let depthIncrease: number = 0
 
 array.forEach((value) => {
-    const splitValue = value.split(/(\s+)/)
+    const splitValue: string[] = value.split(/(\s+)/)
     const movement: string = splitValue[0]
     const addition: number = Number(splitValue[2])
 
