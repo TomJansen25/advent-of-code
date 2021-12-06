@@ -2,35 +2,29 @@ import { readFileSync } from 'fs';
 
 const f = readFileSync('input.txt', 'utf-8');
 
-function parseInput(rawInput: string) {
-    const [rawNumbers, ...rawBoards] = rawInput.split("\n\n")
+function parseFile(f: string) {
+    const [rawDraws, ...rawBoards] = f.split("\n\n")
 
-    const numbers = rawNumbers.split(",").map(Number)
+    const draws = rawDraws.split(",").map(Number)
     const boards = rawBoards.map((rawBoard) =>
-        rawBoard.split("\n").map((line) =>
-            line
-                .split(" ")
-                .filter((x) => x.trim().length !== 0)
-                .map(Number),
-        ),
+        rawBoard.split("\n").map((line) => line.split(" ").filter(
+            (x) => x.trim().length !== 0).map(Number))
     )
 
-    return { boards, numbers }
+    return { boards, draws }
 }
 
 type Board = (number | null)[][];
 
 function updateBoard(board: Board, n: number) {
-    board.forEach((row, y) => {
-        row.forEach((cell, x) => {
-            if (cell === n) {
-                board[y][x] = null;
-            }
+    board.forEach((row, rowIndex) => {
+        row.forEach((cell, cellIndex) => {
+            if (cell === n) board[rowIndex][cellIndex] = null;
         });
     });
 }
 
-function boardWon(board: Board) {
+function hasBoardWon(board: Board) {
     for (const line of board) {
         if (line.every((value) => value === null)) return true;
     }
@@ -44,27 +38,24 @@ function getBoardScore(board: Board): number {
     let score: number = 0
     board.forEach((row) => {
         row.forEach((cell) => {
-            if (cell !== null) {
-                score = score + cell;
-            }
+            if (cell !== null) score = score + cell;
         });
     });
     return score;
 }
 
-function findWinningBoard(boards: Board[], numbers: number[]) {
-    for (const number of numbers) {
+function findWinningBoard(boards: Board[], draws: number[]) {
+    for (const draw of draws) {
         for (const board of boards) {
-            updateBoard(board, number);
-            if (boardWon(board)) {
+            updateBoard(board, draw);
+            if (hasBoardWon(board)) {
                 const score = getBoardScore(board)
-                console.log(`Last number = ${number}, board score = ${score}. Multiplication = ${number * score}.`)
-                return { board, number }
+                console.log(`Last draw = ${draw}, board score = ${score}. Multiplication = ${draw * score}.`)
+                return { board, draw }
             }
         }
     }
 }
 
-const { boards, numbers } = parseInput(f)
-
-findWinningBoard(boards, numbers)
+const { boards, draws } = parseFile(f)
+findWinningBoard(boards, draws)

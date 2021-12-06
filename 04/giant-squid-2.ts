@@ -2,31 +2,24 @@ import { readFileSync } from 'fs';
 
 const f = readFileSync('input.txt', 'utf-8');
 
-function parseInput(rawInput: string) {
-    const [rawNumbers, ...rawBoards] = rawInput.split("\n\n")
+function parseFile(f: string) {
+    const [rawDraws, ...rawBoards] = f.split("\n\n")
 
-    const numbers = rawNumbers.split(",").map(Number)
+    const draws = rawDraws.split(",").map(Number)
     const boards = rawBoards.map((rawBoard) =>
-        rawBoard.split("\n").map((line) =>
-            line
-                .split(" ")
-                .filter((x) => x.trim().length !== 0)
-                .map(Number),
-        ),
+        rawBoard.split("\n").map((line) => line.split(" ").filter(
+            (x) => x.trim().length !== 0).map(Number))
     )
 
-    return { boards, numbers }
+    return { boards, draws }
 }
 
 type Board = (number | null)[][];
 
-
 function updateBoard(board: Board, n: number) {
-    board.forEach((row, y) => {
-        row.forEach((cell, x) => {
-            if (cell === n) {
-                board[y][x] = null;
-            }
+    board.forEach((row, rowIndex) => {
+        row.forEach((cell, cellIndex) => {
+            if (cell === n) board[rowIndex][cellIndex] = null;
         });
     });
 }
@@ -45,9 +38,7 @@ function getBoardScore(board: Board): number {
     let score: number = 0
     board.forEach((row) => {
         row.forEach((cell) => {
-            if (cell !== null) {
-                score = score + cell;
-            }
+            if (cell !== null) score = score + cell;
         });
     });
     return score;
@@ -88,11 +79,11 @@ function findWinningBoardRounds(boards: Board[], numbers: number[]): BoardWin[] 
     return boardWinRound
 }
 
-const { boards, numbers } = parseInput(f)
-const boardWinRound = findWinningBoardRounds(boards, numbers)
+const { boards, draws } = parseFile(f)
+const boardWinRound = findWinningBoardRounds(boards, draws)
 
-const maxRound = Math.max.apply(Math, boardWinRound.map(function (o) { return o.round; }))
+const maxRound = Math.max.apply(Math, boardWinRound.map(function (r) { return r.round; }))
 console.log(maxRound)
 
-let item1 = boardWinRound.find(i => i.round === maxRound);
-console.log(item1)
+const lastBoard = boardWinRound.find(b => b.round === maxRound);
+console.log(lastBoard)
