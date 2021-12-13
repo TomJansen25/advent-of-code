@@ -13,12 +13,6 @@ const testInput: number[][] = `5483143223
 4846848554
 5283751526`.split("\n").map(line => line.split("").map(Number))
 
-type Point = {
-    x: number,
-    y: number,
-    brightness: number
-}
-
 const maxRow: number = testInput.length - 1
 const maxCol: number = testInput[0].length - 1
 
