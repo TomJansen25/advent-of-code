@@ -41,8 +41,7 @@ type Cuboid = [x: number, y: number, z: number]
 
 type Reactor = Map<string, number>
 
-
-function processInput(input: string, include: boolean = true): Command[] {
+function processInput(input: string): Command[] {
 
     let commands: Command[] = []
 
@@ -66,11 +65,9 @@ function processInput(input: string, include: boolean = true): Command[] {
             }
         })
 
-        if (!include && currentCommand.x[0] >= -50 && currentCommand.x[1] <= 50 &&
+        if (currentCommand.x[0] >= -50 && currentCommand.x[1] <= 50 &&
             currentCommand.y[0] >= -50 && currentCommand.y[1] <= 50 &&
             currentCommand.z[0] >= -50 && currentCommand.z[1] <= 50) {
-            commands.push(currentCommand)
-        } else if (include) {
             commands.push(currentCommand)
         }
     })
@@ -97,7 +94,7 @@ function commandToCuboid(command: Command, reactor: Reactor): Reactor {
 
 function main(input: string): Map<string, number> {
 
-    const commands = processInput(input, false)
+    const commands = processInput(input)
 
     let reactor: Reactor = new Map();
 
