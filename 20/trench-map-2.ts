@@ -1,4 +1,3 @@
-import exp from 'constants';
 import { readFileSync } from 'fs';
 
 const input: string = readFileSync('input.txt', 'utf-8')
