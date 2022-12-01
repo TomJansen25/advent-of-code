@@ -1,2 +1,6 @@
+.idea
 .vscode
 res.txt
+
+# Exclude Scala Compiled Classes
+*.class
