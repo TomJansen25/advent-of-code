@@ -4,3 +4,6 @@ res.txt
 
 # Exclude Scala Compiled Classes
 *.class
+
+# Exclude Notebooks
+*.ipynb
