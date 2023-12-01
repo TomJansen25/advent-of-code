@@ -4,6 +4,7 @@
 | ---- | -------- | --------- |
 | 2021 | TypeScript | [Solutions](2021) |
 | 2022 | Scala | [Solutions](2022) |
+| 2023 | Python | [Solutions](2023) |
 
 
 ----
