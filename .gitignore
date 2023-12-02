@@ -1,3 +1,4 @@
+# Exclude PyCharm and/or VS Code files
 .idea
 .vscode
 res.txt
@@ -5,5 +6,9 @@ res.txt
 # Exclude Scala Compiled Classes
 *.class
 
-# Exclude Notebooks
+# Exclude Notebooks and Checkpoints
 *.ipynb
+*.ipynb_checkpoints
+
+__pycache__/
+
