@@ -40,29 +40,15 @@ def find_symbols_and_numbers(input: str) -> Tuple[list[Symbol], list[Number]]:
 
 
 def is_part_number(number: Number, symbols: list[Symbol]) -> bool:
-    y_adjacent = [s for s in symbols if s.y <= number.y + 1 and s.y >= number.y - 1]
-    x_adjacent = [
-        s for s in y_adjacent if s.x >= number.x_start - 1 and s.x <= number.x_end + 1
-    ]
-    return True if len(x_adjacent) > 0 else False
+    y_adj = [s for s in symbols if number.y - 1 <= s.y <= number.y + 1]
+    x_adj = [s for s in y_adj if s.x >= number.x_start - 1 and s.x <= number.x_end + 1]
+    return True if len(x_adj) > 0 else False
 
 
 def get_gear_ratio(symbol: Symbol, numbers: list[Number]) -> int:
-    gear_ratio = 0
-
-    y_adjacent = [
-        number
-        for number in numbers
-        if number.y <= symbol.y + 1 and number.y >= symbol.y - 1
-    ]
-    x_adjacent = [
-        number
-        for number in y_adjacent
-        if number.x_end >= symbol.x - 1 and number.x_start <= symbol.x + 1
-    ]
-    if len(x_adjacent) == 2:
-        gear_ratio = np.prod([n.number for n in x_adjacent])
-
+    y_adj = [n for n in numbers if symbol.y - 1 <= n.y <= symbol.y + 1]
+    x_adj = [n for n in y_adj if n.x_end >= symbol.x - 1 and n.x_start <= symbol.x + 1]
+    gear_ratio = np.prod([n.number for n in x_adj]) if len(x_adj) == 2 else 0
     return gear_ratio
 
 
@@ -70,10 +56,8 @@ if __name__ == "__main__":
     with open("input.txt", "r") as f:
         input = f.read()
 
-    symbols, numbers = find_symbols_and_numbers(test_input)
-    part_numbers = [
-        number.number for number in numbers if is_part_number(number, symbols)
-    ]
+    symbols, numbers = find_symbols_and_numbers(input)
+    part_numbers = [n.number for n in numbers if is_part_number(n, symbols)]
     print(f"Solution Part 1: {sum(part_numbers)}")
 
     potential_gears = [s for s in symbols if s.symbol == "*"]
